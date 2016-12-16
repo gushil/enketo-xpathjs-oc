@@ -1,5 +1,5 @@
 {
-  "name": "enketo-xpathjs",
+  "name": "enketo-xpathjs-oc",
   "description": "JS implementation of XPath extended with OpenRosa functions and the date datatype",
   "homepage": "https://enketo.org",
   "version": "1.3.3",
