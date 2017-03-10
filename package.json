@@ -2,7 +2,7 @@
   "name": "enketo-xpathjs-oc",
   "description": "JS implementation of XPath extended with OpenRosa functions and the date datatype",
   "homepage": "https://enketo.org",
-  "version": "1.3.3",
+  "version": "1.4.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/enketo/enketo-xpathjs"
@@ -22,20 +22,20 @@
     "grunt": "1.0.x",
     "grunt-karma": "2.0.x",
     "grunt-mocha-test": "0.13.x",
-    "karma": "1.3.x",
+    "karma": "1.5.x",
     "karma-chai": "0.1.x",
     "karma-chrome-launcher": "2.0.x",
     "karma-firefox-launcher": "1.0.x",
-    "karma-mocha": "1.2.x",
+    "karma-mocha": "1.3.x",
     "karma-opera-launcher": "1.0.x",
     "karma-phantomjs-launcher": "1.0.x",
     "karma-safari-launcher": "1.0.x",
-    "mocha": "3.1.x",
+    "mocha": "3.2.x",
     "phantomjs-prebuilt": "2.1.x",
     "time-grunt": "1.4.x",
     "grunt-contrib-clean": "1.0.x",
     "grunt-contrib-concat": "1.0.x",
-    "grunt-contrib-uglify": "2.0.x",
+    "grunt-contrib-uglify": "2.2.x",
     "grunt-peg": "2.0.1"
   }
 }

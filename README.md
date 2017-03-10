@@ -19,7 +19,7 @@ Features
 Getting Started
 --------
 
-  1. Include with `npm install enketo-xpathjs --save` or `bower install enketo-xpathjs --save` or manually download and add [build/enketo-xpathjs.min.js](https://raw.github.com/enketo/enketo-xpathjs/master/build/enketo-xpathjs.min.js) file.
+  1. Include with `npm install enketo-xpathjs --save` or manually download and add [build/enketo-xpathjs.min.js](https://raw.github.com/enketo/enketo-xpathjs/master/build/enketo-xpathjs.min.js) file.
   
   2. Include enketo-xpathjs.min.js in the \<head> of your HTML document.
      NOTE: Make sure HTML document is in strict mode i.e. it has a !DOCTYPE declaration at the top!

@@ -555,6 +555,17 @@ describe('Custom "OpenRosa" functions', function() {
         });
     });
 
+    it('log()', function() {
+        [
+            ['log(2)', doc, 0.6931471805599453],
+            ['log("NaN")', doc, NaN],
+            ['log("a")', doc, NaN],
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
     it('log10()', function() {
         [
             // note this has a tiny rounding error because Math.log10 is not supported in PhantomJS
@@ -580,6 +591,17 @@ describe('Custom "OpenRosa" functions', function() {
         [
             ['exp(2)', doc, 7.38905609893065],
             ['exp("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+     it('exp10()', function() {
+        [
+            ['exp10(2)', doc, 100],
+            ['exp10(-2)', doc, 0.01],
+            ['exp10("NaN")', doc, NaN],
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.deep.equal(t[2]);

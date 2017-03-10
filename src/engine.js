@@ -5117,6 +5117,27 @@ var XPathJS = (function(){
 			},
 
 			/**
+			 * The log function returns the natural logarithm of the argument.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-log
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			log : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.log(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
 			 * The pi function returns an approximation to the mathematical constant π.
 			 *
 			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-pi
@@ -5146,6 +5167,28 @@ var XPathJS = (function(){
 				fn: function(a)
 				{
 					return new NumberType( Math.exp(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+
+			/**
+			 * The exp10 function returns the value of 10^x.
+			 *
+			 * @see https://www.w3.org/TR/xpath-functions-30/#func-math-exp10
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			exp10 : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.pow(10, a) ) ;
 				},
 
 				args: [

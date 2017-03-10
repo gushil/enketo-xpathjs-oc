@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.4.0] - 2017-03-07
+--------------------
+##### Added
+- Log() and exp10 functions.
+
 [1.3.3] - 2016-11-04
 --------------------
 ##### Fixed
