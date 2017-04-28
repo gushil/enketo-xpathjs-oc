@@ -1,5 +1,5 @@
 /* global define, describe, xdescribe, require, it, xit, before, after, beforeEach, afterEach, expect, Blob, doc, win, docEvaluate, documentEvaluate, window, loadXMLFile, helpers, XPathJS*/
-"use strict";
+'use strict';
 
 describe('Custom "OpenRosa" functions', function() {
 
@@ -319,8 +319,10 @@ describe('Custom "OpenRosa" functions', function() {
             ["int(2.51)", 2],
             ["int(2)", 2],
             ["int('2.1')", 2],
-            ["int('2.51')", 2], 
+            ["int('2.51')", 2],
             ["int(1 div 47999799999)", 0], //(2.08e-11)
+            ["int(-1.4)", -1],
+            ["int(-1.51)", -1]
         ].forEach(function(t) {
             result = documentEvaluate(t[0], doc, null, win.XPathResult.NUMBER_TYPE);
             expect(result.numberValue).to.equal(t[1]);
@@ -597,7 +599,7 @@ describe('Custom "OpenRosa" functions', function() {
         });
     });
 
-     it('exp10()', function() {
+    it('exp10()', function() {
         [
             ['exp10(2)', doc, 100],
             ['exp10(-2)', doc, 0.01],
@@ -688,7 +690,53 @@ describe('Custom "OpenRosa" functions', function() {
         expect(result.numberValue).to.equal(0.0);
     });
 
+    it('ends-with', function() {
+        [
+            ["ends-with('', '')", true],
+            ["ends-with('a', '')", true],
+            ["ends-with('a', 'a')", true],
+            ["ends-with('a', 'b')", false],
+            ["ends-with('ba', 'a')", true],
+            ["ends-with('', 'b')", false]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], doc, null, win.XPathResult.BOOLEAN_TYPE, null);
+            expect(result.booleanValue).to.equal(t[1]);
+        });
+    });
+
+    it('ends-with() fails when too many arguments are provided', function() {
+        var test = function() {
+            documentEvaluate("ends-with(1, 2, 3)", doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+        };
+        expect(test).to.throw(win.Error);
+    });
+
+    it('ends-with() fails when not enough arguments are provided', function() {
+        var test = function() {
+            documentEvaluate("ends-with()", doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+        };
+        expect(test).to.throw(win.Error);
+
+        test = function() {
+            documentEvaluate("ends-with(1)", doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+        };
+        expect(test).to.throw(win.Error);
+    });
+
+    it('abs', function(){
+        [
+            ['abs(10.5)', 10.5],
+            ['abs(-10.5)', 10.5],
+            ['abs("-10.5")', 10.5],
+            ['abs("a")', NaN],
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], doc, null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[1]);
+        });
+    });
+
     /*
+     This function is now supported by translating it into regular XPath before passing to this evaluator.
     it('indexed-repeat()', function() {
         [
             // targeting div child of #testXPathEvaluate
@@ -705,6 +753,7 @@ describe('Custom "OpenRosa" functions', function() {
     */
 
     /*
+    This function is now supported by translating it into regular XPath before passing to this evaluator.
     it('indexed-repeat() with invalid args', function() {
         [
             // targeting div child of #testXPathEvaluate
