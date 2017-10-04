@@ -68,4 +68,7 @@ module.exports = function(grunt) {
         'concat:dist',
         'uglify:dist'
     ]);
+
+    grunt.registerTask('test-dev', ['dist', 'karma:headless']);
+    grunt.registerTask('test-browsers-dev', ['dist', 'karma:browsers']);
 };

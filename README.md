@@ -94,7 +94,7 @@ grunt dist
 Test
 ----------
 
-Run tests headlessly with `grunt karma:headless` and in browsers with `grunt karma:browsers`.
+Run tests headlessly with `grunt test-dev` and in browsers with `grunt test-browsers-dev`.
 
 
 Change log

@@ -294,7 +294,7 @@ describe('Custom "OpenRosa" functions', function() {
             //["format-date('Mon, 02 Jul 2012 00:00:00 GMT', )", doc, '']
             // the test below probably only works in the GMT -6 timezone...
             ["format-date(., '%Y | %y | %m | %n | %b | %d | %e | %H | %h | %M | %S | %3 | %a')", doc.getElementById("FunctionDateCase5"),
-               '2012 | 12 | 08 | 8 | Aug | 08 | 8 | 06 | 6 | 07 | 08 | 123 | Wed'
+                '2012 | 12 | 08 | 8 | Aug | 08 | 8 | 06 | 6 | 07 | 08 | 123 | Wed'
             ],
         ].forEach(function(t) {
             var expr = t[0];
@@ -308,13 +308,13 @@ describe('Custom "OpenRosa" functions', function() {
     });
 
     // Karma config is setting timezone to America/Denver
-    it('format-date() - locale dependent', function() {   
+    it('format-date() - locale dependent', function() {
         [
-            ["format-date('2017-05-26T00:00:01-06:00', '%a %b')", doc, 'Fri May' ],
-            ["format-date('2017-05-26T23:59:59-06:00', '%a %b')", doc, 'Fri May' ],
-            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'Fri May', 'en' ],
-            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'ven. mai', 'fr' ],
-            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'vr mei', 'nl' ],
+            ["format-date('2017-05-26T00:00:01-06:00', '%a %b')", doc, 'Fri May'],
+            ["format-date('2017-05-26T23:59:59-06:00', '%a %b')", doc, 'Fri May'],
+            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'Fri May', 'en'],
+            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'ven. mai', 'fr'],
+            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'vr mei', 'nl'],
         ].forEach(function(t) {
             document.querySelector('iframe').contentWindow.enketoFormLocale = t[3];
             var expr = t[0];
@@ -386,7 +386,8 @@ describe('Custom "OpenRosa" functions', function() {
             ["min(*)", doc.getElementById('FunctionMaxMinWithEmpty'), NaN],
             ["min(1, 2, 3)", doc, 1],
             ["min('')", doc, NaN],
-            ["min(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple'), NaN]
+            ["min(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple'), NaN],
+            ["min(//nonexisting)", doc, NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.be.a('number');
@@ -404,7 +405,8 @@ describe('Custom "OpenRosa" functions', function() {
             ["max(*)", doc.getElementById('FunctionMaxMinWithEmpty'), NaN],
             ["max(1, 2, 3)", doc, 3],
             ["max('')", doc, NaN],
-            ["max(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple'), NaN]
+            ["max(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple'), NaN],
+            ["max(//nonexisting)", doc, NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.be.a('number');
@@ -762,7 +764,7 @@ describe('Custom "OpenRosa" functions', function() {
             ['count-non-empty(//xhtml:div[@id="FunctionCountNonEmpty"]/xhtml:p/xhtml:span)', 2],
             ['count-non-empty(//xhtml:div[@id="FunctionCountNonEmpty"]//*)', 5],
             ['count-non-empty(//xhtml:div[@id="NoExist"]/xhtml:div)', 0],
-            
+
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.deep.equal(t[1]);
@@ -773,15 +775,15 @@ describe('Custom "OpenRosa" functions', function() {
         [
             'count-non-empty()',
             'count-non-empty(2)',
-            'count-non-empty(0)', 
+            'count-non-empty(0)',
             'count-non-empty("a")',
         ].forEach(function(t) {
-            var test = function(){
+            var test = function() {
                 documentEvaluate(t, doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
             };
             expect(test).to.throw(win.Error);
         });
-        
+
     });
 
     /*

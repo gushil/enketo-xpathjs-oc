@@ -4608,7 +4608,7 @@ var XPathJS = (function(){
 				 *
 				 * A slight improvement over JavaRosa is that each argument can be a nodeset
 				 *
-				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @see https://www.w3.org/TR/xpath-functions/#func-min
 				 * @param {BaseType} object1
 				 * @param {BaseType} object2
 				 * @return {NumberType}
@@ -4631,6 +4631,9 @@ var XPathJS = (function(){
 								{
 									min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
 								}
+							}
+							if (nodeset.length === 0){
+								min = NaN;
 							}
 						} 
 						else 
@@ -4661,7 +4664,7 @@ var XPathJS = (function(){
 				 *
 				 * A slight improvement over JavaRosa is that each argument can be a nodeset
 				 *
-				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @see https://www.w3.org/TR/xpath-functions/#func-max
 				 * @param {BaseType}  object1
 				 * @param {BaseType}  object2
 				 * @return {NumberType}
@@ -4683,6 +4686,9 @@ var XPathJS = (function(){
 								{
 									max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
 								}
+							}
+							if (nodeset.length === 0){
+								max = NaN;
 							}
 						}
 						else {

@@ -142,7 +142,7 @@ describe('native number functions', function() {
         expect(test).to.throw(win.Error);
     });
 
-    it('floor failes when too few arguments are provided', function() {
+    it('floor fails when too few arguments are provided', function() {
         var test = function() {
             documentEvaluate("floor()", doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
         };

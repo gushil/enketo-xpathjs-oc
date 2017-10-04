@@ -51,7 +51,8 @@ describe('native nodeset functions', function() {
     it('count()', function() {
         [
             ["count(xhtml:p)", 4],
-            ["count(p)", 0]
+            ["count(p)", 0],
+            ["count(//nonexisting)", 0]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], doc.getElementById('testFunctionNodeset2'), helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.equal(t[1]);
