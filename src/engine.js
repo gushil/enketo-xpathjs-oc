@@ -1843,9 +1843,9 @@ var XPathJS = (function(){
 	//maybe the string should be build 'manually' with milliseconds appended to it
 	//more in line with JavaRosa
 	DateType.prototype.toString = function(){
-		return new Date(this.value).toUTCString();
+		return new Date(this.value).toISOLocalString();
 	}
-	//gets milliseconds since epoch
+	// Gets days since epoch
 	DateType.prototype.toNumber = function(){
 		return ( new Date(this.value).getTime() ) / (1000 * 60 * 60 * 24) ;
 	}
@@ -1853,7 +1853,7 @@ var XPathJS = (function(){
 	DateType.prototype.toBoolean = function(){
 		return (!isNaN(new Date(this.value).getTime()));
 	}
-
+	
 	/**
 	 * A new exception has been created for exceptions specific to these XPath interfaces.
 	 *
@@ -4002,33 +4002,32 @@ var XPathJS = (function(){
 			//},
 
 			/********************************************************************/	
-			/**** JAVAROSA-specific XPath functions (or XPath 2.0 functions) ****/
+			/**** OpenRosa-specific XPath functions (or XPath 2.0 functions) ****/
 			/********************************************************************/
 
-			sum_jr: {
+			'count-non-empty': {
 				/**
-				 * The JavaRosa version of the sum function is the same as the XPath 1.0 function
-				 * EXCEPT that it evaluates an empty node ('') to 0 instead of NaN.
-				 * @obsolete
-				 * @see 
-				 * @param {NodeSetType} 
+				 * The count-non-empty function returns the number of non-empty nodes in argument node-set. 
+				 * A node is considered non-empty if it is convertible into a string with a greater-than zero length.
+				 *
+				 * @see https://www.w3.org/TR/2003/REC-xforms-20031014/slice7.html#fn-count-non-empty
+				 * @param {NodeSetType} nodeset
 				 * @return {NumberType}
 				 */
 				fn: function(nodeset)
 				{
-					var i, value
-						sum = 0;
-					;
-					
+					var i;
+					var count=0;
+
 					nodeset = nodeset.toNodeSet();
-					
-					for(i = 0; i < nodeset.length; i++)
-					{
-						value = ( nodeStringValue(nodeset[i]) == '' ) ? '0' : nodeStringValue(nodeset[i]);
-						sum += (new StringType(value)).toNumber();
+
+					for ( i=0 ; i < nodeset.length ; i++){
+						if ((new StringType(nodeStringValue(nodeset[i]))).toString().length > 0) {
+							count++;
+						}
 					}
-					
-					return new NumberType(sum);
+
+					return new NumberType(count);
 				},
 				
 				args: [
@@ -4037,7 +4036,6 @@ var XPathJS = (function(){
 				
 				ret: 'number'
 			},
-
 
 			position: {
 				/**
@@ -4461,7 +4459,7 @@ var XPathJS = (function(){
 
 			now: {
 				/**
-				 * The now function returns the date in seconds between now and the epoch.
+				 * The now function returns the current datetime.
 				 * 
 				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
 				 * @return {NumberType}
@@ -4610,7 +4608,7 @@ var XPathJS = (function(){
 				 *
 				 * A slight improvement over JavaRosa is that each argument can be a nodeset
 				 *
-				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @see https://www.w3.org/TR/xpath-functions/#func-min
 				 * @param {BaseType} object1
 				 * @param {BaseType} object2
 				 * @return {NumberType}
@@ -4633,6 +4631,9 @@ var XPathJS = (function(){
 								{
 									min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
 								}
+							}
+							if (nodeset.length === 0){
+								min = NaN;
 							}
 						} 
 						else 
@@ -4663,7 +4664,7 @@ var XPathJS = (function(){
 				 *
 				 * A slight improvement over JavaRosa is that each argument can be a nodeset
 				 *
-				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @see https://www.w3.org/TR/xpath-functions/#func-max
 				 * @param {BaseType}  object1
 				 * @param {BaseType}  object2
 				 * @return {NumberType}
@@ -4685,6 +4686,9 @@ var XPathJS = (function(){
 								{
 									max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
 								}
+							}
+							if (nodeset.length === 0){
+								max = NaN;
 							}
 						}
 						else {
@@ -4805,6 +4809,7 @@ var XPathJS = (function(){
 							}
 							return str;
 						};
+					var locale = window ? window.enketoFormLocale : undefined;
 
 					if (!dateO.toBoolean())
 					{
@@ -4812,11 +4817,11 @@ var XPathJS = (function(){
 					}
 
 					props = {
-						'Y' : date.getFullYear(),
+						'Y'	: date.getFullYear(),
 						'y'	: date.getFullYear().toString().substring(2,4),
 						'm'	: intPad((date.getMonth()+1), 2),
-						'n' : date.getMonth()+1,
-						'b'	: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()],
+						'n'	: date.getMonth()+1,
+						'b'	: date.toLocaleDateString( locale, { month: 'short' } ),
 						'd'	: intPad(date.getDate(), 2),
 						'e'	: date.getDate(),
 						'H'	: intPad(date.getHours(), 2),
@@ -4824,72 +4829,7 @@ var XPathJS = (function(){
 						'M'	: intPad(date.getMinutes(), 2),
 						'S'	: intPad(date.getSeconds(), 2),
 						'3'	: intPad(date.getMilliseconds(), 3),
-						'a' : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()]
-					}
-
-					for (prop in props)
-					{
-						result = result.replace('%'+prop, props[prop]);
-					}
-
-					return new StringType(result);
-				},
-
-				args: [
-					{t: 'date'},
-					{t: 'string'}
-				],
-
-				ret: 'string'
-
-			},
-
-			/**
-			 * Alias of format-date
-			 *
-			 * @see http://opendatakit.org/help/form-design/binding/
-			 * @param {Object} a
-			 * @param {Object} b
-			 * @return {StringType}
-			 */
-			'format-date-time' : {
-
-				fn: function(dateO, format)
-				{
-					var i,j, 
-						dateO = new DateType(dateO), //not sure why this did not happen automatically
-						date = dateO.toDate(),
-						result = format.toString(),
-						intPad = function(num, l)
-						{
-							var str = num.toString(),
-								zeros = l - str.length;
-							for (j=0 ; j < zeros ; j++)
-							{
-								str = '0'+str;
-							}
-							return str;
-						};
-
-					if (!dateO.toBoolean())
-					{
-						return new StringType(date.toString());
-					}
-
-					props = {
-						'Y' : date.getFullYear(),
-						'y'	: date.getFullYear().toString().substring(2,4),
-						'm'	: intPad((date.getMonth()+1), 2),
-						'n' : date.getMonth()+1,
-						'b'	: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()],
-						'd'	: intPad(date.getDate(), 2),
-						'e'	: date.getDate(),
-						'H'	: intPad(date.getHours(), 2),
-						'h'	: date.getHours(),
-						'M'	: intPad(date.getMinutes(), 2),
-						'S'	: intPad(date.getSeconds(), 2),
-						'3'	: intPad(date.getMilliseconds(), 3),
-						'a' : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()]
+						'a'	: date.toLocaleDateString( locale, { weekday: 'short' } )
 					}
 
 					for (prop in props)
@@ -5490,6 +5430,10 @@ var XPathJS = (function(){
 			}*/
 		}
 	}
+	/**
+	 * Alias functions
+	 */
+	functions[""]['format-date-time'] = functions[""]['format-date'];
 	
 	/**
 	 * Evaluate parsed expression tree.

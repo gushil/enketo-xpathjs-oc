@@ -147,7 +147,7 @@
 			<div id="FunctionDateCase2">2012-08-20T00:00:00.00+00:00</div>
 			<div id="FunctionDateCase3">2012-08-08T00:00:00+00:00</div>
 			<div id="FunctionDateCase4">2012-06-23</div>
-			<div id="FunctionDateCase5">2012-08-08T06:07:08.123-06:00</div>
+			<div id="FunctionDateCase5">2012-08-08T06:07:08.123-07:00</div>
 		</div>
 
 		<div id="FunctionMinCase">
@@ -199,6 +199,21 @@
 		<div id="FunctionArea4">7.9377 -11.5845 0 0;7.9324 -11.5902 0 0;7.927 -11.5857 0 0;7.925 -11.578 0 0;7.9267 -11.5722 0 0;7.9325 -11.5708 0 0;7.9372 -11.5737 0 0;7.9393 -11.579 0 0;7.9377 -11.5845 0 0</div>
 
 		<div id="FunctionWeightedChecklist">3</div>
+
+
+		<div id="FunctionCountNonEmpty">
+			<div>-5</div>
+			<div>-15</div>
+			<div></div>
+			<p>
+				<div></div>
+				<div><!--comment--></div>
+				<span>  </span>
+				<span>  
+				</span>
+			</p>
+			<p></p>
+		</div>
 
 		<!-- *****************************-->
 

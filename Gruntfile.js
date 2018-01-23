@@ -3,9 +3,7 @@
 
 module.exports = function(grunt) {
 
-	require('time-grunt')(grunt);
-
-	grunt.initConfig({
+    grunt.initConfig({
 
         clean: {
             dist: {
@@ -28,6 +26,7 @@ module.exports = function(grunt) {
         concat: {
             dist: {
                 src: [
+                    'src/date-extensions.js',
                     'src/engine.js',
                     'dist/parser.js',
                     'src/umd.js'
@@ -43,28 +42,32 @@ module.exports = function(grunt) {
             }
         },
 
-		karma: {
-			options: {
-				singleRun: true,
-				reporters: ['dots']
-			},
-			headless: {
-				configFile: 'test/karma.conf.js',
-				browsers: ['PhantomJS']
-			},
-			browsers: {
-				configFile: 'test/karma.conf.js',
-				browsers: ['Chrome', 'Firefox', 'Safari', 'Opera']
-			}
-		}
-	});
+        karma: {
+            options: {
+                singleRun: true,
+                reporters: ['dots'],
+                configFile: 'test/karma.conf.js',
+                customLaunchers: {
+                    ChromeHeadlessNoSandbox: {
+                        base: 'ChromeHeadless',
+                        flags: [ '--no-sandbox' ]
+                    }
+                },
+            },
+            headless: {
+                browsers: ['ChromeHeadlessNoSandbox']
+            },
+            browsers: {
+                browsers: ['Chrome' , 'Firefox', 'Safari', 'Opera' ]
+            }
+        }
+    });
 
     grunt.loadNpmTasks('grunt-contrib-clean');
     grunt.loadNpmTasks('grunt-contrib-concat');
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-peg');
-	grunt.loadNpmTasks('grunt-karma');
-	grunt.loadNpmTasks('time-grunt');
+    grunt.loadNpmTasks('grunt-karma');
 
     grunt.registerTask('dist', [
         'clean:dist',
@@ -72,5 +75,7 @@ module.exports = function(grunt) {
         'concat:dist',
         'uglify:dist'
     ]);
-};
 
+    grunt.registerTask('test-dev', ['dist', 'karma:headless']);
+    grunt.registerTask('test-browsers-dev', ['dist', 'karma:browsers']);
+};
