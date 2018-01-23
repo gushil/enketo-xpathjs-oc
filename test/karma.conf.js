@@ -3,10 +3,10 @@
 
 'use strict';
 
-module.exports = function(config) {
+module.exports = function (config) {
 
     // Force timezone for tests, so that datetime conversion results are predictable
-    process.env.TZ = 'America/Denver';
+    process.env.TZ = 'America/Phoenix';
 
     config.set({
 
@@ -21,14 +21,14 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [{
-                pattern: 'dist/**/*.js',
-                included: false
-            }, {
-                pattern: 'test/**/*.xml',
-                watched: true,
-                served: true,
-                included: false
-            },
+            pattern: 'dist/**/*.js',
+            included: false
+        }, {
+            pattern: 'test/**/*.xml',
+            watched: true,
+            served: true,
+            included: false
+        },
             'test/helpers.js',
             'test/**/*.spec.js',
         ],
