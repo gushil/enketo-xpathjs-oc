@@ -146,7 +146,7 @@ describe('Custom "OpenRosa" functions', function () {
         });
     });
 
-    // THIS IS NOT AN OPENROSA FUNCTION
+    // THIS IS NOT A CUSTOM FUNCTION
     it('contextual and absolute', function () {
         [
             ["(. >= 122)", doc.getElementById('FunctionNumberCaseNumber'), true],
@@ -156,6 +156,28 @@ describe('Custom "OpenRosa" functions', function () {
         ].forEach(function (t) {
             var result = documentEvaluate(t[0], t[1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
             expect(t[2]).to.equal(result.booleanValue);
+        });
+    });
+
+    it('dates as string', function(){
+        [
+            [ '"2018-01-01"', '2018-01-01'],
+            [ 'date("2018-01-01")', '2017-12-31T17:00:00.000-07:00'], // America/Phoenix
+            [ '"2018-01-01" + 1', '17533'], // converted to Number according to regular XPath rules
+            [ 'date("2018-01-01" + 1)', '2018-01-01T17:00:00.000-07:00'],
+        ].forEach(function( t ){
+            var result = documentEvaluate(t[0], doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+            expect(result.stringValue).to.equal(t[1]);
+        });
+
+        [
+            "today()",
+            "now()",
+            "date(today() + 10)",
+            "date(10 + today())"
+        ].forEach(function(t) {
+            var result = documentEvaluate(t, doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+            expect(result.stringValue).to.match(/([0-9]{4}\-[0-9]{2}\-[0-9]{2})([T]|[\s])([0-9]){2}:([0-9]){2}([0-9:.]*)(\+|\-)([0-9]{2}):([0-9]{2})$/);
         });
     });
 
@@ -263,10 +285,10 @@ describe('Custom "OpenRosa" functions', function () {
 
     it('invalid dates', function () {
         [
-            //"date('1983-09-31')",
+            "date('1983-09-31')",
             "date('not a date')",
-            "date('opv_3')"
-            //"date(true())"
+            "date('opv_3')",
+            "date(true())"
             //"date(convertible())"
         ].forEach(function (t) {
             var expr = t[0];

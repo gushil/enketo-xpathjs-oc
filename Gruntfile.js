@@ -26,6 +26,7 @@ module.exports = function(grunt) {
         concat: {
             dist: {
                 src: [
+                    'src/date-extensions.js',
                     'src/engine.js',
                     'dist/parser.js',
                     'src/umd.js'
@@ -45,13 +46,13 @@ module.exports = function(grunt) {
             options: {
                 singleRun: true,
                 reporters: ['dots'],
-                configFile: 'test/karma.conf.js',
+                configFile: 'test/karma.conf.js'
             },
-            headless: {   
+            headless: {
                 browsers: ['ChromeHeadless']
             },
             browsers: {
-                browsers: ['Chrome', 'Firefox', 'Safari', 'Opera']
+                browsers: ['Chrome' , 'Firefox', 'Safari', 'Opera' ]
             }
         }
     });

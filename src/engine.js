@@ -1843,9 +1843,9 @@ var XPathJS = (function(){
 	//maybe the string should be build 'manually' with milliseconds appended to it
 	//more in line with JavaRosa
 	DateType.prototype.toString = function(){
-		return new Date(this.value).toUTCString();
+		return new Date(this.value).toISOLocalString();
 	}
-	//gets milliseconds since epoch
+	// Gets days since epoch
 	DateType.prototype.toNumber = function(){
 		return ( new Date(this.value).getTime() ) / (1000 * 60 * 60 * 24) ;
 	}
@@ -1853,7 +1853,7 @@ var XPathJS = (function(){
 	DateType.prototype.toBoolean = function(){
 		return (!isNaN(new Date(this.value).getTime()));
 	}
-
+	
 	/**
 	 * A new exception has been created for exceptions specific to these XPath interfaces.
 	 *
@@ -4459,7 +4459,7 @@ var XPathJS = (function(){
 
 			now: {
 				/**
-				 * The now function returns the date in seconds between now and the epoch.
+				 * The now function returns the current datetime.
 				 * 
 				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
 				 * @return {NumberType}

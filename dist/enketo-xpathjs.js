@@ -1,4 +1,41 @@
 /**
+ * Converts a native Date UTC String to a RFC 3339-compliant date string with local offsets
+ * used in ODK, so it replaces the Z in the ISOstring with a local offset
+ * @return {string} a datetime string formatted according to RC3339 with local offset
+ */
+Date.prototype.toISOLocalString = function() {
+    //2012-09-05T12:57:00.000-04:00 (ODK)
+
+    if ( this.toString() === 'Invalid Date' ) {
+        return this.toString();
+    }
+
+    return new Date( this.getTime() - ( this.getTimezoneOffset() * 60 * 1000 ) ).toISOString()
+        .replace( 'Z', this.getTimezoneOffsetAsTime() );
+};
+
+Date.prototype.getTimezoneOffsetAsTime = function() {
+    var offsetMinutesTotal;
+    var hours;
+    var minutes;
+    var direction;
+    var pad2 = function( x ) {
+        return ( x < 10 ) ? '0' + x : x;
+    };
+
+    if ( this.toString() === 'Invalid Date' ) {
+        return this.toString();
+    }
+
+    offsetMinutesTotal = this.getTimezoneOffset();
+
+    direction = ( offsetMinutesTotal < 0 ) ? '+' : '-';
+    hours = pad2( Math.abs( Math.floor( offsetMinutesTotal / 60 ) ) );
+    minutes = pad2( Math.abs( Math.floor( offsetMinutesTotal % 60 ) ) );
+
+    return direction + hours + ':' + minutes;
+};
+/**
  * Original copyright notice for XPathJS:
  *
  * Copyright (C) 2011 Andrej Pavlovic for XPathJS
@@ -1843,9 +1880,9 @@ var XPathJS = (function(){
 	//maybe the string should be build 'manually' with milliseconds appended to it
 	//more in line with JavaRosa
 	DateType.prototype.toString = function(){
-		return new Date(this.value).toUTCString();
+		return new Date(this.value).toISOLocalString();
 	}
-	//gets milliseconds since epoch
+	// Gets days since epoch
 	DateType.prototype.toNumber = function(){
 		return ( new Date(this.value).getTime() ) / (1000 * 60 * 60 * 24) ;
 	}
@@ -1853,7 +1890,7 @@ var XPathJS = (function(){
 	DateType.prototype.toBoolean = function(){
 		return (!isNaN(new Date(this.value).getTime()));
 	}
-
+	
 	/**
 	 * A new exception has been created for exceptions specific to these XPath interfaces.
 	 *
@@ -4459,7 +4496,7 @@ var XPathJS = (function(){
 
 			now: {
 				/**
-				 * The now function returns the date in seconds between now and the epoch.
+				 * The now function returns the current datetime.
 				 * 
 				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
 				 * @return {NumberType}
