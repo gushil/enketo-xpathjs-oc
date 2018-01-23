@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.6.2] - 2018-01-23
+--------------------
+##### Fixed
+- Date strings not formatted according to spec.
+
 [1.6.1] - 2017-10-04
 --------------------
 ##### Fixed
